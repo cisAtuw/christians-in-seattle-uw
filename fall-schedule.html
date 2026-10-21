@@ -3,49 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fall Schedule | Christians in Seattle at UW</title>
-  <meta name="description" content="Fall Quarter 2026 weekly schedule for Christians in Seattle at UW.">
-  <meta property="og:title" content="Fall Schedule | Christians in Seattle at UW">
-  <meta property="og:description" content="Weekly Bible reading, Friday family gathering, and Saturday hiking at the University of Washington.">
-  <meta property="og:type" content="website">
-  <link rel="icon" href="images/branding/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/site.css">
-  <script type="module" src="js/app.js"></script>
+  <title>Redirecting… | Christians in Seattle at UW</title>
+  <meta http-equiv="refresh" content="0; url=events.html">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://christiansinseattle.org/events.html">
+  <script>location.replace("events.html" + location.hash);</script>
 </head>
-<body>
-  <a class="skip-link" href="#main">Skip to main content</a>
-  <div id="site-header"></div>
-  <main id="main">
-    <header class="page-hero">
-      <div class="shell">
-        <p class="eyebrow">Fall 2026</p>
-        <h1 data-i18n="pages.scheduleTitle">Fall Quarter Schedule</h1>
-        <p data-i18n="pages.scheduleIntro">Featured welcome and orientation events for Fall Quarter 2026.</p>
-      </div>
-    </header>
-    <section class="section section-dark">
-      <div class="shell">
-        <div class="section-heading-row">
-          <a class="button button-primary" href="#" data-google-calendar-all data-social-preview="calendar" data-i18n="common.addAll">Add all to Google Calendar</a>
-        </div>
-        <div id="fall-schedule-list" class="schedule-grid" aria-live="polite"></div>
-      </div>
-    </section>
-    <section class="section section-white">
-      <div class="shell">
-        <div class="notice" data-i18n="common.latestNotice">Meeting rooms and event details may change. Please check Instagram, Discord, or the latest event listing before attending.</div>
-      </div>
-    </section>
-  </main>
-  <div id="site-footer"></div>
-  <script type="module">
-    import { fallOrientationEvents } from "./data/events.js";
-    import { splitEvents, renderUpcoming } from "./js/schedule.js";
-    function render() {
-      renderUpcoming(document.querySelector("#fall-schedule-list"), splitEvents(fallOrientationEvents).upcoming);
-    }
-    render();
-    window.addEventListener("languagechange", render);
-  </script>
-</body>
+<body><p><a href="events.html">Continue</a></p></body>
 </html>

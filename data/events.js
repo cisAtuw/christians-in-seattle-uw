@@ -262,7 +262,7 @@ export const pastEvents = [
 export const regularEvents = [
   {
     id: "weekly-bible-reading",
-    title: { en: "Weekly Bible Reading", zh: "每周圣经阅读" },
+    title: { en: "Weekly Bible Study", zh: "每周查经" },
     description: {
       en: "Read the Bible, ask questions, and explore faith with other students.",
       zh: "与其他学生一同阅读圣经、提出问题并探索信仰。",
@@ -288,27 +288,38 @@ export const regularEvents = [
 
 export const weeklyEvents = [
   {
+    id: "sunday-worship-weekly",
+    title: { en: "Sunday Gathering", zh: "主日聚会" },
+    description: {
+      en: "🙏 Sundays, 11:00 a.m.–1:00 p.m. — worship, Scripture, and honest conversation about life and faith. Interested? Message us on Discord or Instagram, or call/text the numbers on the Contact page (WeChat works too). We don't post the location publicly because it may change — just ask us. For any activity off campus, we provide rides and meals.",
+      zh: "🙏 每周日上午 11:00–下午 1:00——敬拜、读经，聊聊生活与信仰。有兴趣？欢迎在 Discord、Instagram 联系我们，或拨打/发短信到联系页面的电话，也可以通过微信咨询。地点可能会变动，所以不公开发布，欢迎直接咨询我们。凡是校外的活动，我们都提供接送和饭食。",
+    },
+  },
+  {
     id: "friday-family-gathering",
-    day: { en: "Every Friday", zh: "每周五" },
     title: { en: "Friday Family Gathering", zh: "周五家庭聚会" },
     description: {
-      en: "🏡 End the week around a table, not a screen. Come hang out, share a meal, sing a little, and feel at home with us — all are welcome.",
-      zh: "🏡 一周的最后，不如围坐在一起，而不是对着屏幕。来这里聊聊天、吃点东西、唱几首诗，像回家一样——人人都欢迎。",
+      en: "🏡 End the week around a table, not a screen. Come hang out, share a meal, sing a little, and feel at home with us — all are welcome. Rides and meals are provided for off-campus gatherings.",
+      zh: "🏡 一周的最后，不如围坐在一起，而不是对着屏幕。来这里聊聊天、吃点东西、唱几首诗，像回家一样——人人都欢迎。校外聚会我们提供接送和饭食。",
     },
-    time: { en: "5:30–7:00 p.m.", zh: "下午 5:30–7:00" },
-    location: { en: "Near UW campus — check Instagram or Discord for the address", zh: "UW 校园附近——具体地址请查看 Instagram 或 Discord" },
-    audience: { en: "Everyone is welcome — students, friends, and anyone curious", zh: "欢迎所有人——同学、朋友，以及任何好奇的人" },
   },
   {
     id: "saturday-hiking",
-    day: { en: "Saturday mornings", zh: "周六早上" },
-    title: { en: "Saturday Morning Hike", zh: "周六早晨爬山" },
+    title: { en: "Saturday Hike", zh: "周六爬山" },
     description: {
-      en: "🥾 We hike together on Saturday mornings. Where to? Not decided yet — and we'd love your ideas! Tell us your favorite trail on Instagram or Discord.",
-      zh: "🥾 周六早上我们会一起去爬山。去哪里？还没定——欢迎大家提建议！请在 Instagram 或 Discord 告诉我们你喜欢的路线。",
+      en: "🥾 We hike together on Saturdays, tentatively 11 AM–1 PM. Time and place aren't set yet — come help us plan the details! Once it's decided, we'll update and let everyone know. Rides and meals are provided for any off-campus activity.",
+      zh: "🥾 周六我们会一起爬山，暂定上午 11:00–下午 1:00。时间和地点都还没定——欢迎大家一起提议、规划活动细节！确定后我们会更新并通知大家。校外活动我们提供接送和饭食。",
     },
-    time: { en: "Saturday morning (exact time announced each week)", zh: "周六早上（具体时间每周公布）" },
-    location: { en: "To be decided — suggestions welcome!", zh: "待定——欢迎提议！" },
-    audience: { en: "Anyone who enjoys the outdoors and good company", zh: "任何喜欢户外和好伙伴的人" },
   },
+];
+
+// Weekly timetable (day: 0 = Sunday ... 6 = Saturday). Times are 24-hour HH:MM.
+export const weeklySchedule = [
+  { id: "zh-reading-tue", day: 2, start: "18:00", end: "19:00", kind: "reading-zh", title: { en: "Chinese Bible Study", zh: "中文查经" }, place: { en: "Suzzallo 334", zh: "Suzzallo 334" } },
+  { id: "en-reading-wed", day: 3, start: "16:30", end: "17:30", kind: "reading-en", title: { en: "English Bible Study", zh: "英文查经" }, place: { en: "Suzzallo 334", zh: "Suzzallo 334" } },
+  { id: "zh-reading-thu", day: 4, start: "12:30", end: "13:30", kind: "reading-zh", title: { en: "Chinese Bible Study", zh: "中文查经" }, place: { en: "Suzzallo 334", zh: "Suzzallo 334" } },
+  { id: "en-reading-thu", day: 4, start: "16:30", end: "17:30", kind: "reading-en", title: { en: "English Bible Study", zh: "英文查经" }, place: { en: "Suzzallo 334", zh: "Suzzallo 334" } },
+  { id: "friday-family", day: 5, start: "17:30", end: "19:00", kind: "fellowship", title: { en: "Family Gathering", zh: "家庭聚会" }, place: { en: "Near campus", zh: "校园附近" } },
+  { id: "saturday-hike", day: 6, start: "11:00", end: "13:00", kind: "hike", title: { en: "Hike", zh: "爬山" }, timeNote: { en: "11 AM–1 PM", zh: "11:00–13:00" }, place: { en: "Time/place TBD", zh: "时间地点待定" } },
+  { id: "sunday-gathering", day: 0, start: "11:00", end: "13:00", kind: "worship", title: { en: "Sunday Gathering", zh: "主日聚会" }, place: { en: "Ask us for location", zh: "地点请咨询" } },
 ];

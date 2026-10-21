@@ -3,82 +3,59 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bible Study & Fellowship | Christians in Seattle at UW</title>
-  <meta name="description" content="Bible reading and weekly fellowship for University of Washington students.">
-  <meta property="og:title" content="Bible Study & Fellowship | Christians in Seattle at UW">
-  <meta property="og:description" content="Read, ask questions, sing, and grow in friendship with other UW students.">
+  <title>Bible Study | Christians in Seattle at UW</title>
+  <meta name="description" content="Weekly Bible study for University of Washington students, in English and Chinese.">
+  <meta property="og:title" content="Bible Study | Christians in Seattle at UW">
+  <meta property="og:description" content="Come with your questions, bring a friend, or just come as you are.">
   <meta property="og:type" content="website">
   <link rel="icon" href="images/branding/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Bellefair&family=Pinyon+Script&display=swap">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/bible.css">
   <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/bible-art.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <div id="site-header"></div>
-  <main id="main">
-    <header class="page-hero">
-      <div class="shell">
-        <p class="eyebrow">Read · Ask · Connect</p>
-        <h1 data-i18n="pages.bibleTitle">Bible Study & Fellowship</h1>
-        <p data-i18n="pages.bibleIntro">Read, ask questions, sing, and grow in friendship with other UW students.</p>
-      </div>
-    </header>
-    <section class="section section-white">
-      <div class="shell photo-strip">
-        <img src="images/social/community-fellowship.jpg" alt="Students gathering for fellowship on the UW campus">
-        <div class="photo-strip-copy">
-          <h2 data-i18n="activities.bibleReading">Bible Reading</h2>
-          <p data-i18n="pages.bibleWelcome">Everyone is welcome to read with us. No prior Bible knowledge is required, and questions are encouraged.</p>
-          <p data-i18n="pages.bibleFormat">A typical gathering includes reading a short portion of the Bible, discussing questions, singing, and time to connect.</p>
+  <main id="main" class="bible-page">
+    <div class="bible-stage">
+      <svg class="art art-tl" viewBox="0 0 210 210" aria-hidden="true"><use href="#art-sprig"/></svg>
+      <svg class="art art-tr" viewBox="0 0 210 210" aria-hidden="true"><use href="#art-branch"/></svg>
+      <svg class="art art-bl" viewBox="0 0 210 210" aria-hidden="true"><use href="#art-branch"/></svg>
+      <svg class="art art-br" viewBox="0 0 210 210" aria-hidden="true"><use href="#art-sprig"/></svg>
+      <div class="bible-inner">
+        <p class="bible-script" data-i18n="bible.welcomeTo">Welcome to Our</p>
+        <h1 class="bible-title" data-i18n="bible.title">Bible Study</h1>
+        <div class="bible-groups">
+          <section class="bible-group bible-en">
+            <h2 data-i18n="bible.english">English</h2>
+            <div class="bible-slots">
+              <article class="bible-slot"><strong data-i18n="bible.wed">WED</strong><span data-i18n="bible.timeAfternoon">4:30–5:30 PM</span><span>Suzzallo 334</span></article>
+              <article class="bible-slot"><strong data-i18n="bible.thu">THU</strong><span data-i18n="bible.timeAfternoon">4:30–5:30 PM</span><span>Suzzallo 334</span></article>
+            </div>
+          </section>
+          <section class="bible-group bible-zh">
+            <h2 data-i18n="bible.chinese">Chinese</h2>
+            <div class="bible-slots">
+              <article class="bible-slot"><strong data-i18n="bible.tue">TUE</strong><span data-i18n="bible.timeTue">6:00–7:00 PM</span><span>Suzzallo 334</span></article>
+              <article class="bible-slot"><strong data-i18n="bible.thu">THU</strong><span data-i18n="bible.timeNoon">12:30–1:30 PM</span><span>Suzzallo 334</span></article>
+            </div>
+          </section>
         </div>
+        <p class="bible-copy"><span data-i18n="bible.invite">We’d love to see you at Bible study! Come with your questions, bring a friend, or just come as you are.</span> <strong data-i18n="bible.flex">If these times don’t work for you, let us know when you’re free—we’re still figuring out our schedule as the quarter gets started!</strong></p>
+        <p class="bible-links">
+          <a class="bible-button" data-link="discordInviteUrl" data-social-preview="discord" data-i18n="home.joinDiscord">Join Discord</a>
+          <a class="bible-button" data-link="instagramUrl" data-social-preview="instagram" data-i18n="home.followInstagram">Follow Instagram</a>
+          <a class="bible-button" href="index.html#interest" data-i18n="bible.tellUs">Tell us your free time</a>
+        </p>
+        <p class="bible-note bible-note-strong" data-until="2026-10-07" data-i18n="bible.tueNote">This Tuesday (10/6) only: we meet in Suzzallo 338.</p>
+        <p class="bible-note" data-i18n="bible.roomNote">Rooms may change — we will post updates on Discord and Instagram.</p>
+        <svg class="bible-book" viewBox="0 0 260 150" role="img" aria-label="Open Bible"><use href="#art-book"/></svg>
       </div>
-    </section>
-    <section class="section section-accent">
-      <div class="shell">
-        <div class="section-heading">
-          <h2 data-i18n="pages.weeklyDetails">Weekly details</h2>
-          <p data-i18n="pages.readingScheduleNote">Starting this week, for the remaining 10 weeks of the quarter:</p>
-        </div>
-        <div class="info-grid">
-          <article class="info-card">
-            <span class="activity-index">EN · WED</span>
-            <h3 data-i18n="pages.englishReading">English Bible Reading</h3>
-            <p data-i18n="pages.englishReadingWed">Wednesday, 4:30–5:30 PM</p>
-          </article>
-          <article class="info-card">
-            <span class="activity-index">EN · THU</span>
-            <h3 data-i18n="pages.englishReading">English Bible Reading</h3>
-            <p data-i18n="pages.englishReadingThu">Thursday, 4:30–5:30 PM</p>
-          </article>
-          <article class="info-card">
-            <span class="activity-index">中文 · 周二</span>
-            <h3 data-i18n="pages.chineseReading">Chinese Bible Reading</h3>
-            <p data-i18n="pages.chineseReadingTue">Tuesday, 5:30–6:30 PM</p>
-          </article>
-          <article class="info-card">
-            <span class="activity-index">中文 · 周四</span>
-            <h3 data-i18n="pages.chineseReading">Chinese Bible Reading</h3>
-            <p data-i18n="pages.chineseReadingThu">Thursday, 12:00–1:00 PM</p>
-          </article>
-          <article class="info-card">
-            <span class="activity-index">LOCATION</span>
-            <h3 data-i18n="pages.readingLocation">UW Suzzallo Library, Study Hall 334</h3>
-            <p data-i18n="pages.readingLocationNote">Room 334 is our default. If it is not available, we will use another room and notify everyone in advance.</p>
-          </article>
-          <article class="info-card">
-            <span class="activity-index">UPDATES</span>
-            <h3 data-i18n="common.discord">Discord</h3>
-            <a class="text-link" data-link="discordInviteUrl" data-social-preview="discord" data-i18n="home.joinDiscord">Join Discord</a>
-            <span data-discord-unavailable data-i18n="common.discordUnavailable">Discord invite being updated</span>
-          </article>
-          <article class="info-card">
-            <span class="activity-index">ANNOUNCEMENTS</span>
-            <h3 data-i18n="common.instagram">Instagram</h3>
-            <a class="text-link" data-link="instagramUrl" data-social-preview="instagram" data-i18n="home.followInstagram">Follow Instagram</a>
-          </article>
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
   <div id="site-footer"></div>
 </body>

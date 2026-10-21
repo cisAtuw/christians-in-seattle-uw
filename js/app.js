@@ -4,11 +4,8 @@ import { applyDocumentLanguage, getLanguage, t, toggleLanguage } from "./i18n.js
 const navigation = [
   ["nav.home", "index.html"],
   ["nav.about", "about.html"],
-  ["nav.schedule", "fall-schedule.html"],
   ["nav.events", "events.html"],
   ["nav.bibleStudy", "bible-study.html"],
-  ["nav.newStudents", "new-students.html"],
-  ["nav.resources", "resources.html"],
   ["nav.contact", "contact.html"],
 ];
 
@@ -92,10 +89,12 @@ function renderConfigLinks() {
 
 function renderGoogleCalendarLinks() {
   const calendarUrl = new URL("calendar/fall-2026-orientation.ics", document.baseURI).href;
+  const subscribeUrl = `https://calendar.google.com/calendar/r?cid=${calendarUrl.replace(/^https?:/, "webcal:")}`;
   document.querySelectorAll("[data-google-calendar-all]").forEach((element) => {
-    element.href = calendarUrl;
-    element.setAttribute("download", "christians-in-seattle-fall-2026.ics");
-    element.removeAttribute("target");
+    element.href = subscribeUrl;
+    element.target = "_blank";
+    element.rel = "noopener noreferrer";
+    element.removeAttribute("download");
   });
 }
 
@@ -127,9 +126,9 @@ function renderSocialPreviews() {
     const cards = {
       discord: { image: siteData.socialCommunityImage, title: "Christians in Seattle UW", text: text("Events, questions, Bible verses, and campus fellowship", "活动通知、问题、经文与校园交通"), extra: `<a href="${siteData.discordChannelUrl}" target="_blank" rel="noopener noreferrer">${text("Preview #general", "预览 #general")} &rarr;</a>` },
       instagram: { image: siteData.instagramPreviewImage, title: `@${siteData.instagramUsername}`, text: text("Recent events, campus photos, and Bible verse posts", "查看最新活动、校园照片与经文分享") },
-      schedule: { image: siteData.scheduleImagePreview, title: text("Weekly Gatherings", "每周聚会"), text: text("Friday family dinners, Saturday hikes, and Bible reading", "周五家庭聚会、周六爬山和读经") },
+      schedule: { image: siteData.scheduleImagePreview, title: text("Weekly Gatherings", "每周聚会"), text: text("Friday family dinners, Saturday hikes, and Bible study", "周五家庭聚会、周六爬山和查经") },
       events: { image: siteData.eventsPreviewImage, title: text("Past Adventures", "过往活动"), text: text("Day trips, hikes, and dinners with friends", "一日游、爬山和朋友聚餐") },
-      bible: { image: siteData.biblePreviewImage, title: text("Bible Reading", "圣经阅读"), text: text("Read, ask questions, and sing together", "一起读经、提问、唱诗") },
+      bible: { image: siteData.biblePreviewImage, title: text("Bible Study", "查经"), text: text("Read, ask questions, and sing together", "一起读经、提问、唱诗") },
       church: { image: siteData.churchPreviewImage, title: text("The Church Family", "教会大家庭"), text: text("Meet the wider community we belong to", "认识我们所属的更大群体") },
       calendar: { image: siteData.calendarPreviewImage, title: text("Never Miss a Week", "不错过每一周"), text: text("Add every gathering to your calendar", "把每次聚会加入你的日历") },
     };
@@ -172,6 +171,13 @@ function renderConfiguredContent() {
     }
     element.href = `mailto:${siteData.contactEmail}`;
     element.textContent = siteData.contactEmail;
+  });
+  document.querySelectorAll("[data-contact-phones]").forEach((element) => {
+    const phones = siteData.contactPhones || [];
+    element.hidden = !phones.length;
+    element.innerHTML = phones
+      .map((person) => `<a href="tel:${person.phone.replace(/[^0-9+]/g, "")}"><span>${person.name} · ${person.phone}</span><span aria-hidden="true">☎</span></a>`)
+      .join("");
   });
   document.querySelectorAll("[data-instagram-username]").forEach((element) => {
     element.textContent = `@${siteData.instagramUsername}`;

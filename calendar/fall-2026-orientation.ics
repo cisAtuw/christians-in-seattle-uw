@@ -25,13 +25,13 @@ END:VTIMEZONE
 BEGIN:VEVENT
 UID:reading-zh-tue@christiansinseattle.org
 DTSTAMP:20261005T180000Z
-DTSTART;TZID=America/Los_Angeles:20261006T173000
-DTEND;TZID=America/Los_Angeles:20261006T183000
+DTSTART;TZID=America/Los_Angeles:20261006T180000
+DTEND;TZID=America/Los_Angeles:20261006T190000
 RRULE:FREQ=WEEKLY;COUNT=10
-SUMMARY:Chinese Bible Reading / 中文读经
-DESCRIPTION:Weekly Chinese Bible reading. / 每周中文读经。
+SUMMARY:Chinese Bible Study / 中文查经
+DESCRIPTION:Weekly Chinese Bible study. / 每周中文查经。
 LOCATION:UW Suzzallo Library Study Hall 334 (room may change - check Instagram or Discord)
-URL:https://christiansinseattle.org/fall-schedule.html
+URL:https://christiansinseattle.org/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:reading-en-wed@christiansinseattle.org
@@ -39,21 +39,21 @@ DTSTAMP:20261005T180000Z
 DTSTART;TZID=America/Los_Angeles:20261007T163000
 DTEND;TZID=America/Los_Angeles:20261007T173000
 RRULE:FREQ=WEEKLY;COUNT=10
-SUMMARY:English Bible Reading / 英文读经
-DESCRIPTION:Weekly English Bible reading. / 每周英文读经。
+SUMMARY:English Bible Study / 英文查经
+DESCRIPTION:Weekly English Bible study. / 每周英文查经。
 LOCATION:UW Suzzallo Library Study Hall 334 (room may change - check Instagram or Discord)
-URL:https://christiansinseattle.org/fall-schedule.html
+URL:https://christiansinseattle.org/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:reading-zh-thu@christiansinseattle.org
 DTSTAMP:20261005T180000Z
-DTSTART;TZID=America/Los_Angeles:20261008T120000
-DTEND;TZID=America/Los_Angeles:20261008T130000
+DTSTART;TZID=America/Los_Angeles:20261008T123000
+DTEND;TZID=America/Los_Angeles:20261008T133000
 RRULE:FREQ=WEEKLY;COUNT=10
-SUMMARY:Chinese Bible Reading / 中文读经
-DESCRIPTION:Weekly Chinese Bible reading. / 每周中文读经。
+SUMMARY:Chinese Bible Study / 中文查经
+DESCRIPTION:Weekly Chinese Bible study. / 每周中文查经。
 LOCATION:UW Suzzallo Library Study Hall 334 (room may change - check Instagram or Discord)
-URL:https://christiansinseattle.org/fall-schedule.html
+URL:https://christiansinseattle.org/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:reading-en-thu@christiansinseattle.org
@@ -61,10 +61,10 @@ DTSTAMP:20261005T180000Z
 DTSTART;TZID=America/Los_Angeles:20261008T163000
 DTEND;TZID=America/Los_Angeles:20261008T173000
 RRULE:FREQ=WEEKLY;COUNT=10
-SUMMARY:English Bible Reading / 英文读经
-DESCRIPTION:Weekly English Bible reading. / 每周英文读经。
+SUMMARY:English Bible Study / 英文查经
+DESCRIPTION:Weekly English Bible study. / 每周英文查经。
 LOCATION:UW Suzzallo Library Study Hall 334 (room may change - check Instagram or Discord)
-URL:https://christiansinseattle.org/fall-schedule.html
+URL:https://christiansinseattle.org/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:friday-family@christiansinseattle.org
@@ -75,17 +75,28 @@ RRULE:FREQ=WEEKLY;COUNT=10
 SUMMARY:Friday Family Gathering / 周五家庭聚会
 DESCRIPTION:Weekly family gathering near campus. Check Instagram or Discord for the address. / 校园附近的每周家庭聚会，地址请查看 Instagram 或 Discord。
 LOCATION:Near UW campus
-URL:https://christiansinseattle.org/fall-schedule.html
+URL:https://christiansinseattle.org/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:saturday-hike@christiansinseattle.org
 DTSTAMP:20261005T180000Z
-DTSTART;TZID=America/Los_Angeles:20261010T090000
+DTSTART;TZID=America/Los_Angeles:20261010T110000
 DTEND;TZID=America/Los_Angeles:20261010T130000
 RRULE:FREQ=WEEKLY;COUNT=10
-SUMMARY:Saturday Morning Hike / 周六早晨爬山
-DESCRIPTION:Location to be decided - suggestions welcome! / 地点待定，欢迎提议！
+SUMMARY:Saturday Hike / 周六爬山
+DESCRIPTION:Time and place to be decided - join us in planning! We will update and notify everyone. / 时间地点待定，欢迎一起提议和规划，确定后会更新并通知大家。
 LOCATION:To be decided
-URL:https://christiansinseattle.org/fall-schedule.html
+URL:https://christiansinseattle.org/events.html
+END:VEVENT
+BEGIN:VEVENT
+UID:sunday-gathering@christiansinseattle.org
+DTSTAMP:20261006T200000Z
+DTSTART;TZID=America/Los_Angeles:20261011T110000
+DTEND;TZID=America/Los_Angeles:20261011T130000
+RRULE:FREQ=WEEKLY;COUNT=10
+SUMMARY:Sunday Gathering / 主日聚会
+DESCRIPTION:Weekly Sunday gathering. Check Instagram or Discord for the location. / 每周主日聚会，地点请查看 Instagram 或 Discord。
+LOCATION:See Instagram or Discord
+URL:https://christiansinseattle.org/events.html
 END:VEVENT
 END:VCALENDAR

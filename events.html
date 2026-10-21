@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Events | Christians in Seattle at UW</title>
+  <title>Schedule &amp; Events | Christians in Seattle at UW</title>
   <meta name="description" content="Upcoming and past student events for Christians in Seattle at UW.">
   <meta property="og:title" content="Events | Christians in Seattle at UW">
   <meta property="og:description" content="Bible reading, fellowship, welcome events, and student activities at UW.">
@@ -18,24 +18,24 @@
   <main id="main">
     <header class="page-hero">
       <div class="shell">
-        <p class="eyebrow">Campus community</p>
-        <h1 data-i18n="pages.eventsTitle">Events</h1>
-        <p data-i18n="pages.eventsIntro">Find upcoming student activities and review past events.</p>
+        <p class="eyebrow">Fall 2026</p>
+        <h1 data-i18n="pages.eventsTitle">Schedule &amp; Events</h1>
+        <p data-i18n="pages.eventsIntro">Our weekly rhythm, plus photos from past gatherings.</p>
       </div>
     </header>
-    <section class="section section-white">
+    <section class="section section-dark">
       <div class="shell">
-        <div class="section-heading"><h2 data-i18n="pages.upcoming">Upcoming Events</h2></div>
+        <div class="section-heading-row">
+          <div class="section-heading"><h2 data-i18n="home.featured">Our Weekly Rhythm</h2></div>
+          <div class="schedule-actions">
+            <a class="button button-primary" href="#" data-google-calendar-all data-social-preview="calendar" data-i18n="common.addAll">Add all to Google Calendar</a>
+          </div>
+        </div>
         <div id="upcoming-events" class="schedule-grid" aria-live="polite"></div>
+        <div class="notice" data-i18n="common.latestNotice">Meeting rooms and event details may change. Please check Instagram, Discord, or the latest event listing before attending.</div>
       </div>
     </section>
-    <section id="cancelled-events-section" class="section section-accent" hidden>
-      <div class="shell">
-        <div class="section-heading"><h2 data-i18n="pages.cancelledEvents">Cancelled Events</h2></div>
-        <div id="cancelled-events" class="schedule-grid" aria-live="polite"></div>
-      </div>
-    </section>
-    <section class="section section-rose">
+    <section class="section section-white">
       <div class="shell">
         <div class="section-heading"><h2 data-i18n="pages.past">Past Events</h2></div>
         <div id="past-events" class="schedule-grid" aria-live="polite"></div>
@@ -50,17 +50,12 @@
     function render() {
       const groups = splitEvents();
       renderUpcoming(document.querySelector("#upcoming-events"), groups.upcoming);
-      const cancelledSection = document.querySelector("#cancelled-events-section");
-      cancelledSection.hidden = !groups.cancelled.length;
-      if (groups.cancelled.length) {
-        renderSchedule(document.querySelector("#cancelled-events"), groups.cancelled);
-      }
       const past = document.querySelector("#past-events");
-      const allPast = [...groups.past, ...pastEvents].sort((a, b) => b.date.localeCompare(a.date));
+      const allPast = [...groups.past, ...groups.cancelled, ...pastEvents].sort((a, b) => b.date.localeCompare(a.date));
       if (allPast.length) {
         renderSchedule(past, allPast);
       } else {
-        past.innerHTML = `<p class="empty-state">${getLanguage() === "zh" ? "目前没有过往活动记录。" : "No past events are listed yet."}</p>`;
+        past.innerHTML = "<p class=\"empty-state\">" + (getLanguage() === "zh" ? "目前没有过往活动记录。" : "No past events are listed yet.") + "</p>";
       }
     }
     render();
