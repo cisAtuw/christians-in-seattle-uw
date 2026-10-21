@@ -1319,9 +1319,9 @@ a {
   opacity: 0.92;
 }
 
-.tt-reading-en { background: #7f9170; }
-.tt-reading-zh { background: #b5785a; }
-.tt-fellowship { background: var(--rose); }
+.tt-reading-en { background: #5c6f4e; }
+.tt-reading-zh { background: #94533a; }
+.tt-fellowship { background: #b04672; }
 .tt-hike { background: var(--blue); }
 .tt-worship { background: var(--gold); color: #2b2100; }
 
@@ -1458,4 +1458,9 @@ a {
 @media (max-width: 820px) {
   .interest-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .interest-form { padding: 18px; }
+}
+
+#site-header {
+  min-height: 72px;
+  background: var(--evergreen);
 }
