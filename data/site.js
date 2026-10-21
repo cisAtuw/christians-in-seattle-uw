@@ -45,5 +45,5 @@ export const siteData = {
     },
     primaryDomain: "christiansinseattle.org",
     secondaryDomain: "christiansinseattle.com",
-    lastUpdated: "2026-08-23",
+    lastUpdated: "2026-10-20",
 };
