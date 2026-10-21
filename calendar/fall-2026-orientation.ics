@@ -31,7 +31,7 @@ RRULE:FREQ=WEEKLY;COUNT=10
 SUMMARY:Chinese Bible Study / 中文查经
 DESCRIPTION:Weekly Chinese Bible study. / 每周中文查经。
 LOCATION:UW Suzzallo Library Study Hall 334 (room may change - check Instagram or Discord)
-URL:https://christiansinseattle.org/events.html
+URL:https://cisuw.com/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:reading-en-wed@christiansinseattle.org
@@ -42,7 +42,7 @@ RRULE:FREQ=WEEKLY;COUNT=10
 SUMMARY:English Bible Study / 英文查经
 DESCRIPTION:Weekly English Bible study. / 每周英文查经。
 LOCATION:UW Suzzallo Library Study Hall 334 (room may change - check Instagram or Discord)
-URL:https://christiansinseattle.org/events.html
+URL:https://cisuw.com/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:reading-zh-thu@christiansinseattle.org
@@ -53,7 +53,7 @@ RRULE:FREQ=WEEKLY;COUNT=10
 SUMMARY:Chinese Bible Study / 中文查经
 DESCRIPTION:Weekly Chinese Bible study. / 每周中文查经。
 LOCATION:UW Suzzallo Library Study Hall 334 (room may change - check Instagram or Discord)
-URL:https://christiansinseattle.org/events.html
+URL:https://cisuw.com/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:reading-en-thu@christiansinseattle.org
@@ -64,7 +64,7 @@ RRULE:FREQ=WEEKLY;COUNT=10
 SUMMARY:English Bible Study / 英文查经
 DESCRIPTION:Weekly English Bible study. / 每周英文查经。
 LOCATION:UW Suzzallo Library Study Hall 334 (room may change - check Instagram or Discord)
-URL:https://christiansinseattle.org/events.html
+URL:https://cisuw.com/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:friday-family@christiansinseattle.org
@@ -75,7 +75,7 @@ RRULE:FREQ=WEEKLY;COUNT=10
 SUMMARY:Friday Family Gathering / 周五家庭聚会
 DESCRIPTION:Weekly family gathering near campus. Check Instagram or Discord for the address. / 校园附近的每周家庭聚会，地址请查看 Instagram 或 Discord。
 LOCATION:Near UW campus
-URL:https://christiansinseattle.org/events.html
+URL:https://cisuw.com/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:saturday-hike@christiansinseattle.org
@@ -86,7 +86,7 @@ RRULE:FREQ=WEEKLY;COUNT=10
 SUMMARY:Saturday Hike / 周六爬山
 DESCRIPTION:Time and place to be decided - join us in planning! We will update and notify everyone. / 时间地点待定，欢迎一起提议和规划，确定后会更新并通知大家。
 LOCATION:To be decided
-URL:https://christiansinseattle.org/events.html
+URL:https://cisuw.com/events.html
 END:VEVENT
 BEGIN:VEVENT
 UID:sunday-gathering@christiansinseattle.org
@@ -97,6 +97,6 @@ RRULE:FREQ=WEEKLY;COUNT=10
 SUMMARY:Sunday Gathering / 主日聚会
 DESCRIPTION:Weekly Sunday gathering. Check Instagram or Discord for the location. / 每周主日聚会，地点请查看 Instagram 或 Discord。
 LOCATION:See Instagram or Discord
-URL:https://christiansinseattle.org/events.html
+URL:https://cisuw.com/events.html
 END:VEVENT
 END:VCALENDAR
