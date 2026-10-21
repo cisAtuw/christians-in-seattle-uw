@@ -225,3 +225,7 @@ document.addEventListener("DOMContentLoaded", renderShared);
 window.addEventListener("languagechange", renderShared);
 
 export { siteData, t, getLanguage, externalLink };
+
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
