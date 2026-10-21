@@ -43,7 +43,7 @@ export const siteData = {
           zh: "UW 西雅图校区 — 教室待确认",
           confirmed: false,
     },
-    primaryDomain: "christiansinseattle.org",
+    primaryDomain: "cisuw.com",
     secondaryDomain: "christiansinseattle.com",
     lastUpdated: "2026-10-20",
 };
