@@ -1,0 +1,14 @@
+{
+  "name": "Christians in Seattle at UW",
+  "short_name": "CIS UW",
+  "description": "A welcoming student community at the University of Washington.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f5f8",
+  "theme_color": "#4b2e83",
+  "icons": [
+    { "src": "images/branding/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "images/branding/logo-cis-uw.jpg", "sizes": "512x512", "type": "image/jpeg" }
+  ]
+}
