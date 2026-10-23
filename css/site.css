@@ -1488,3 +1488,9 @@ a {
 @media (max-width: 640px) {
   .cal-embed { height: 520px; }
 }
+
+.form-again { display: none; margin-top: 6px; padding: 0; border: 0; background: none; color: inherit; font: inherit; font-weight: 800; text-decoration: underline; cursor: pointer; }
+.interest-form.is-sent > label,
+.interest-form.is-sent > button[type="submit"] { display: none; }
+.interest-form.is-sent .form-status { min-height: 0; padding: 22px 0 6px; font-size: 1.25rem; line-height: 1.4; }
+.interest-form.is-sent .form-again { display: inline-block; }
