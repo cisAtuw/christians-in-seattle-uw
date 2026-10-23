@@ -7,6 +7,9 @@ const ICS_URL = `https://calendar.google.com/calendar/ical/${encodeURIComponent(
 const OUT = "data/weekly-schedule.js";
 const TZ = "America/Los_Angeles";
 
+// Chinese display text for common locations typed in English on the calendar.
+const PLACE_ZH = { "Near campus": "校园附近", "Ask us for location": "地点请咨询" };
+
 const DEFAULT_PLACE = {
   worship: { en: "Ask us for location", zh: "地点请咨询" },
   hike: { en: "Time/place TBD", zh: "时间地点待定" },
@@ -89,7 +92,7 @@ export function buildSlots(ics) {
     const kind = kindOf(summary);
     let place = DEFAULT_PLACE[kind] || DEFAULT_PLACE.other;
     const loc = ev.LOCATION ? unescapeText(ev.LOCATION.value) : "";
-    if (loc && !/^[A-Za-z_]+\/[A-Za-z_]+$/.test(loc)) place = { en: loc, zh: loc };
+    if (loc && !/^[A-Za-z_]+\/[A-Za-z_]+$/.test(loc)) place = { en: loc, zh: PLACE_ZH[loc] || loc };
     for (const day of days) {
       const slot = { id: `${kind}-${day}-${hhmm(start).replace(":", "")}`, day, start: hhmm(start), end: hhmm(end), kind, title: splitTitle(summary), place };
       if (kind === "hike") {
