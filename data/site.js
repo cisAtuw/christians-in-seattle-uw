@@ -19,7 +19,7 @@ export const siteData = {
     discordInviteUrl: "https://discord.gg/KaU6RJ3ZWE",
     discordChannelUrl: "https://discord.com/channels/1416897268094865440/1416897268996378818",
     campusGroupsUrl: "https://huskylink.washington.edu/club_signup?group_type=&search=Christians&category_tags=&order=name_asc",
-    churchWebsiteUrl: "https://tcots-website-preview.netlify.app",
+    churchWebsiteUrl: "https://cisatuw.github.io/tcots-website/",
     contactEmail: "christiansinseattle@uw.edu",
     contactPhones: [
       { name: "Cecilia", phone: "(773) 396-6422" },
