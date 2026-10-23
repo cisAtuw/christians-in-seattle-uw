@@ -6,6 +6,17 @@ export function bindInterestForm(form) {
   const status = form.querySelector("[data-form-status]");
   const button = form.querySelector("button[type=submit]");
   let busy = false;
+  const again = document.createElement("button");
+  again.type = "button";
+  again.className = "form-again";
+  again.textContent = t("home.formAgain");
+  status.after(again);
+  again.addEventListener("click", () => {
+    form.classList.remove("is-sent");
+    status.textContent = "";
+    delete status.dataset.key;
+    form.querySelector("input[name=name]")?.focus();
+  });
 
   const say = (key, state) => {
     status.dataset.state = state;
@@ -14,6 +25,7 @@ export function bindInterestForm(form) {
   };
 
   window.addEventListener("languagechange", () => {
+    again.textContent = t("home.formAgain");
     if (status.dataset.key) status.textContent = t(status.dataset.key);
   });
 
@@ -48,6 +60,7 @@ export function bindInterestForm(form) {
       const result = await response.json().catch(() => ({}));
       if (!response.ok || String(result.success) === "false") throw new Error("failed");
       form.reset();
+      form.classList.add("is-sent");
       say("home.formSent", "success");
     } catch (error) {
       say("home.formFailed", "error");
