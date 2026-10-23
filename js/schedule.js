@@ -275,10 +275,14 @@ function timetableBlock() {
   const notes = weeklyEvents
     .map((event) => `<li><strong>${localized(event.title)}</strong> — ${localized(event.description)}</li>`)
     .join("");
+  const slotNotes = weeklySchedule
+    .filter((slot) => slot.desc)
+    .map((slot) => `<li><strong>${localized(slot.title)}</strong> — ${localized(slot.desc)}</li>`)
+    .join("");
   return `
     <div class="timetable-wrap">
       ${timetableHtml()}
-      <ul class="tt-notes">${notes}</ul>
+      <ul class="tt-notes">${notes}${slotNotes}</ul>
       <div class="tt-join">
         <h3>${t("pages.joinTitle")}</h3>
         <p>${t("pages.joinBody1")}</p>
