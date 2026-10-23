@@ -93,8 +93,12 @@ export function buildSlots(ics) {
     let place = DEFAULT_PLACE[kind] || DEFAULT_PLACE.other;
     const loc = ev.LOCATION ? unescapeText(ev.LOCATION.value) : "";
     if (loc && !/^[A-Za-z_]+\/[A-Za-z_]+$/.test(loc)) place = { en: loc, zh: PLACE_ZH[loc] || loc };
+    const rawDesc = ev.DESCRIPTION
+      ? ev.DESCRIPTION.value.replace(/\\n/gi, "\n").replace(/\\([,;\\])/g, "$1").replace(/<[^>]+>/g, " ").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").trim()
+      : "";
     for (const day of days) {
       const slot = { id: `${kind}-${day}-${hhmm(start).replace(":", "")}`, day, start: hhmm(start), end: hhmm(end), kind, title: splitTitle(summary), place };
+      if (rawDesc) slot.desc = splitTitle(rawDesc);
       if (kind === "hike") {
         const h12 = (t) => `${t.h % 12 || 12}${t.mi ? ":" + pad(t.mi) : ""} ${t.h < 12 ? "AM" : "PM"}`;
         slot.timeNote = { en: `${h12(start)}–${h12(end)}`, zh: `${hhmm(start)}–${hhmm(end)}` };
