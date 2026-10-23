@@ -1473,3 +1473,18 @@ a {
   border-radius: 4px;
   background: var(--white);
 }
+
+.cal-embed {
+  display: block;
+  width: 100%;
+  height: 640px;
+  margin-top: 22px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 640px) {
+  .cal-embed { height: 520px; }
+}
