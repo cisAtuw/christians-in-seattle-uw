@@ -205,6 +205,7 @@ a {
   color: var(--white);
   background-color: var(--evergreen);
   background-image: url("../images/hero/87941d06-473b-4a57-8537-38b1753b026d.jpg");
+  background-image: image-set(url("../images/hero/hero.webp") type("image/webp"), url("../images/hero/87941d06-473b-4a57-8537-38b1753b026d.jpg") type("image/jpeg"));
   background-position: center 48%;
   background-size: cover;
   overflow: hidden;
