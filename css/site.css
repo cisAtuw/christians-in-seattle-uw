@@ -1495,3 +1495,6 @@ a {
 .interest-form.is-sent > button[type="submit"] { display: none; }
 .interest-form.is-sent .form-status { min-height: 0; padding: 22px 0 6px; font-size: 1.25rem; line-height: 1.4; }
 .interest-form.is-sent .form-again { display: inline-block; }
+
+/* Reserve space for JS-rendered events to avoid layout shift */
+#upcoming-events { min-height: 100vh; }
