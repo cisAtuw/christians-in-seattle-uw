@@ -1464,3 +1464,12 @@ a {
   min-height: 72px;
   background: var(--evergreen);
 }
+
+.qr-card .insta-embed {
+  display: block;
+  width: 100%;
+  height: 540px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--white);
+}
