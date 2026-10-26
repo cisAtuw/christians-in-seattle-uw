@@ -1498,3 +1498,60 @@ a {
 
 /* Reserve space for JS-rendered events to avoid layout shift */
 #upcoming-events { min-height: 100vh; }
+
+/* Add-to-home-screen banner */
+#install-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 14px max(16px, env(safe-area-inset-right, 0px)) calc(14px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: var(--evergreen-2);
+  color: var(--white);
+  box-shadow: 0 -4px 18px rgba(0, 0, 0, .25);
+}
+#install-banner .ib-text { min-width: 0; }
+#install-banner strong { display: block; margin-bottom: 2px; }
+#install-banner p { margin: 0; font-size: .92rem; line-height: 1.45; color: #e9e1f5; }
+#install-banner .ib-actions { margin-top: 10px; }
+#install-banner .ib-btn {
+  display: inline-block;
+  font: inherit;
+  font-weight: 700;
+  border: 0;
+  border-radius: 6px;
+  padding: 10px 16px;
+  min-height: 44px;
+  background: var(--gold);
+  color: var(--evergreen-2);
+  text-decoration: none;
+  cursor: pointer;
+}
+#install-banner .ib-close {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: -8px -8px 0 0;
+  border: 0;
+  background: none;
+  color: var(--white);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+#install-banner .ib-btn:focus-visible, #install-banner .ib-close:focus-visible { outline: 3px solid var(--white); outline-offset: 2px; }
+
+/* Install guide page */
+.guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin: 22px 0 8px; }
+.guide-step { background: var(--white); border: 1px solid #ddd3e6; border-radius: 8px; padding: 14px; }
+.guide-step img { display: block; width: 100%; max-width: 220px; margin: 0 auto 12px; border-radius: 12px; border: 2px solid var(--evergreen-2); aspect-ratio: 1170 / 2532; object-fit: cover; }
+.guide-step h3 { margin: 0 0 4px; font-size: 1.02rem; }
+.guide-step p { margin: 0; color: var(--muted); font-size: .94rem; }
+.guide-step .gk { font-size: .78rem; letter-spacing: .08em; font-weight: 700; color: var(--evergreen); }
+.guide-list { padding-left: 1.2rem; }
+.guide-list li { margin: 0 0 8px; }
