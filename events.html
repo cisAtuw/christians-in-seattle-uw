@@ -74,8 +74,8 @@
           </div>
         </div>
         <details class="fold cal-fold" id="cal-fold">
-          <summary data-i18n="v3.calShow">Show the calendar</summary>
-          <iframe class="cal-embed" title="Christians in Seattle at UW weekly calendar" loading="lazy" src="https://calendar.google.com/calendar/embed?src=christiansinseattle%40uw.edu&ctz=America%2FLos_Angeles&mode=WEEK&showTitle=0&showPrint=0&showTz=0"></iframe>
+          <summary><span class="s-closed" data-i18n="v3.calShow">Show the calendar</span><span class="s-open" data-i18n="v3.calHide">Hide the calendar</span></summary>
+          <iframe class="cal-embed" title="Christians in Seattle at UW weekly calendar" loading="lazy" data-base="https://calendar.google.com/calendar/embed?src=christiansinseattle%40uw.edu&ctz=America%2FLos_Angeles&showTitle=0&showPrint=0&showTz=0&showNav=1&showCalendars=0"></iframe>
         </details>
       </div>
     </section>
@@ -118,18 +118,34 @@
     render();
     window.addEventListener("languagechange", render);
 
-    // Calendar embed: open on wide screens, folded on phones.
+    // Calendar embed: loaded only when it is open and near the screen (keeps the page fast).
     const fold = document.querySelector("#cal-fold");
-    if (matchMedia("(min-width: 821px)").matches) fold.open = true;
-    if (location.hash === "#weekly-calendar") fold.open = true;
+    const frame = document.querySelector(".cal-embed");
+    let near = false;
+    function loadCal() {
+      if (!fold.open || !near) return;
+      const wide = matchMedia("(min-width: 821px)").matches;
+      const src = frame.dataset.base + "&hl=" + (getLanguage() === "zh" ? "zh_CN" : "en") + "&mode=" + (wide ? "WEEK" : "AGENDA");
+      if (frame.getAttribute("src") !== src) frame.setAttribute("src", src);
+    }
+    if (matchMedia("(min-width: 821px)").matches || location.hash === "#weekly-calendar") fold.open = true;
+    new IntersectionObserver((entries) => { near = entries.some((e) => e.isIntersecting); loadCal(); }, { rootMargin: "400px 0px" }).observe(fold);
+    fold.addEventListener("toggle", () => { near = true; loadCal(); });
+    window.addEventListener("languagechange", loadCal);
 
     // Highlight the current section in the jump bar.
     const links = [...document.querySelectorAll(".jump a")];
-    const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => { if (en.isIntersecting) { links.forEach((l) => l.classList.remove("is-current")); map.get(en.target.id)?.classList.add("is-current"); } });
-    }, { rootMargin: "-35% 0px -60% 0px" });
-    map.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    const targets = links.map((a) => document.getElementById(a.getAttribute("href").slice(1)));
+    let ticking = false;
+    function spy() {
+      ticking = false;
+      const line = (document.querySelector("#site-header")?.offsetHeight || 72) + 110;
+      let cur = 0;
+      targets.forEach((el, i) => { if (el && el.getBoundingClientRect().top <= line) cur = i; });
+      links.forEach((l, i) => { l.classList.toggle("is-current", i === cur); if (i === cur) l.setAttribute("aria-current", "true"); else l.removeAttribute("aria-current"); });
+    }
+    addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(spy); } }, { passive: true });
+    spy();
   </script>
 </body>
 </html>

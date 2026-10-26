@@ -30,7 +30,7 @@ function renderNavigation() {
   target.innerHTML = `
     <header class="site-header">
       <div class="nav-shell">
-        <a class="brand" href="index.html" aria-label="${siteData.organizationName}">
+        <a class="brand" href="index.html">
           <img class="brand-logo" src="${siteData.logoImage}" alt="">
           <span><strong>${getLanguage() === "zh" ? siteData.organizationNameZh : siteData.organizationName}</strong><small>${t("common.rso")}</small></span>
         </a>
@@ -50,6 +50,9 @@ function renderNavigation() {
     nav.classList.toggle("is-open", !open);
   });
   target.querySelector(".language-button").addEventListener("click", toggleLanguage);
+  const setHeaderHeight = () => document.documentElement.style.setProperty("--header-h", target.offsetHeight + "px");
+  setHeaderHeight();
+  addEventListener("resize", setHeaderHeight);
 }
 
 function renderFooter() {

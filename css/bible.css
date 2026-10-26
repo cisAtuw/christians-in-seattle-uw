@@ -15,8 +15,8 @@
 .bible-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .bible-slot { display: flex; flex-direction: column; gap: 4px; padding: 22px 12px; border-radius: 26px; background: #e8ece0; text-align: center; }
 .bible-zh .bible-slot { background: #f1e3da; }
-.bible-en h2 { color: #7f9170; }
-.bible-zh h2 { color: #b5785a; }
+.bible-en h2 { color: #566a48; }
+.bible-zh h2 { color: #8d4f34; }
 .bible-note-strong { font-weight: 700; color: #4a4547; }
 .bible-slot strong { font-size: 1.1rem; letter-spacing: .02em; }
 .bible-slot span { font-size: 1rem; line-height: 1.35; }
@@ -26,7 +26,7 @@
 .bible-button { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1.5px solid #8b9777; color: #4a4547; background: transparent; font-size: .9rem; text-decoration: none; }
 .bible-button:hover, .bible-button:focus-visible { background: #8b9777; color: #fff; }
 .bible-links .social-preview { display: inline-flex; width: auto; }
-.bible-note { margin: 18px 0 0; font-size: .82rem; color: #7d7478; }
+.bible-note { margin: 18px 0 0; font-size: .82rem; color: #625a5f; }
 .bible-book { display: block; width: clamp(180px, 42vw, 280px); height: auto; margin: 30px auto 0; }
 .bible-page .social-preview-card { color: #4a4547; }
 @media (max-width: 520px) {
