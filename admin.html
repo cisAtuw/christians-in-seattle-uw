@@ -23,6 +23,8 @@
     .slot h3 { margin: 0 0 4px; font-size: 1rem; }
     .slot .when { color: var(--muted); font-size: 0.85rem; margin-bottom: 6px; }
     .chk { display: flex; align-items: center; gap: 8px; min-height: 40px; font-weight: 700; }
+    .lead { padding: 10px 0; border-top: 1px solid var(--line); }
+    .lead .when { color: var(--muted); font-size: 0.85rem; margin: 2px 0 6px; }
     .msg { min-height: 1.4em; font-size: 0.9rem; font-weight: 700; }
     .ok { color: #1c6b36; } .err { color: #9b1c3a; }
     @media (max-width: 520px) { .row2 { grid-template-columns: 1fr; } }
@@ -37,6 +39,11 @@
       <label class="f">Admin key <input type="password" id="token" autocomplete="off" placeholder="paste once; stays on this device"></label>
       <button class="button button-dark" id="check" type="button">Check key &amp; subscribers</button>
       <p class="msg" id="check-msg"></p>
+    </div>
+
+    <div class="card" id="leads-card">
+      <h2>Contact requests <button class="button button-outline" id="leads-load" type="button" style="min-height:36px;padding:4px 12px;margin-left:8px">Load</button></h2>
+      <div id="leads"></div>
     </div>
 
     <div id="slots"></div>
@@ -75,6 +82,25 @@
       try { const j = await post("/admin/stats", {}); say($("#check-msg"), "Key OK · " + j.subscribers + " device(s) subscribed", true); }
       catch (e) { say($("#check-msg"), e.message, false); }
     });
+
+    const leadsBox = $("#leads");
+    async function loadLeads() {
+      try {
+        const { leads } = await post("/admin/leads", {});
+        leadsBox.innerHTML = leads.length ? leads.map((l) => `<div class="lead" data-id="${esc(l.id)}">
+            <strong>${esc(l.name)}</strong> · ${esc(l.method)}: <span style="user-select:all">${esc(l.contact)}</span>
+            <div class="when">${esc(l.interest)} · ${new Date(l.at).toLocaleString()} · ${esc(l.lang)}</div>
+            <button type="button" class="button button-outline lead-del" style="min-height:32px;padding:2px 10px">Done / delete</button>
+          </div>`).join("") : "<p class='sub'>No requests yet.</p>";
+        leadsBox.querySelectorAll(".lead-del").forEach((b) => b.addEventListener("click", async () => {
+          if (!confirm("Delete this request from the list?")) return;
+          const id = b.closest(".lead").dataset.id;
+          try { await post("/admin/lead-delete", { id }); loadLeads(); } catch (e) { alert(e.message); }
+        }));
+      } catch (e) { leadsBox.innerHTML = `<p class="msg err">${esc(e.message)}</p>`; }
+    }
+    $("#leads-load").addEventListener("click", loadLeads);
+    if (tokenEl.value.trim()) loadLeads();
 
     // Next two weeks of slots
     const items = [];
