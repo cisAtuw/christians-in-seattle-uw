@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Offline | Christians in Seattle at UW</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#4b2e83">
+  <link rel="icon" href="images/branding/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+  <style>
+    .off-wrap{max-width:640px;margin:0 auto;padding:36px 20px 56px}
+    .off-wrap h1{margin:0 0 8px;color:var(--evergreen-2)}
+    .off-wrap p{color:var(--muted);margin:0 0 20px}
+    .off-day{border-top:1px solid #ddd3e6;padding:14px 0}
+    .off-day h2{font-size:1rem;margin:0 0 6px;color:var(--evergreen)}
+    .off-day.today h2::after{content:attr(data-today);margin-left:8px;background:var(--gold);color:var(--evergreen-2);font-size:.72rem;padding:2px 8px;border-radius:99px;vertical-align:2px}
+    .off-item{margin:0 0 8px}
+    .off-item strong{display:block}
+    .off-item span{color:var(--muted);font-size:.93rem}
+    .off-btn{font:inherit;border:0;background:var(--evergreen);color:#fff;padding:12px 20px;border-radius:6px;cursor:pointer;min-height:44px}
+    .off-btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  </style>
+</head>
+<body>
+  <main class="off-wrap" id="main">
+    <h1 id="t">You're offline</h1>
+    <p id="s">Here is our weekly schedule from your last visit. Times may have changed.</p>
+    <div id="list"></div>
+    <p></p>
+    <button class="off-btn" id="retry" type="button">Try again</button>
+  </main>
+  <script type="module">
+    const lang = (() => { try { return localStorage.getItem("cis-uw-language") === "zh" ? "zh" : "en"; } catch (e) { return "en"; } })();
+    const T = {
+      en: { t: "You're offline", s: "Here is our weekly schedule from your last visit. Times may have changed.", r: "Try again", today: "Today", none: "The schedule isn't saved on this device yet. Connect to the internet and open the site once.",
+            days: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] },
+      zh: { t: "目前没有网络", s: "这是你上次访问时保存的每周聚会时间，可能已有变动。", r: "重试", today: "今天", none: "这台设备还没有保存课表。请连上网络，打开一次网站。",
+            days: ["周日","周一","周二","周三","周四","周五","周六"] }
+    }[lang];
+    document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+    document.getElementById("t").textContent = T.t;
+    document.getElementById("s").textContent = T.s;
+    document.getElementById("retry").textContent = T.r;
+    document.getElementById("retry").onclick = () => location.reload();
+    window.addEventListener("online", () => location.reload());
+    const list = document.getElementById("list");
+    try {
+      const { weeklySchedule } = await import("./data/weekly-schedule.js");
+      const today = new Date().getDay();
+      const order = [0,1,2,3,4,5,6].map((i) => (today + i) % 7);
+      const loc = (v) => (v && typeof v === "object" ? (v[lang] || v.en || "") : (v || ""));
+      const html = order.map((d) => {
+        const items = weeklySchedule.filter((x) => x.day === d).sort((a, b) => a.start.localeCompare(b.start));
+        if (!items.length) return "";
+        return `<section class="off-day${d === today ? " today" : ""}"><h2 data-today="${T.today}">${T.days[d]}</h2>` +
+          items.map((x) => `<div class="off-item"><strong>${loc(x.title)}</strong><span>${x.start}–${x.end} · ${loc(x.place)}</span></div>`).join("") + "</section>";
+      }).join("");
+      list.innerHTML = html || `<p>${T.none}</p>`;
+    } catch (e) {
+      list.innerHTML = `<p>${T.none}</p>`;
+    }
+  </script>
+</body>
+</html>

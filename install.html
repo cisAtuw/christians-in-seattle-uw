@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add to Home Screen | Christians in Seattle at UW</title>
+  <meta name="description" content="Step-by-step guide to put cisuw.com on your phone's home screen, for iPhone and Android.">
+  <meta property="og:title" content="Add cisuw.com to your home screen">
+  <meta property="og:description" content="A short guide for iPhone and Android, in English and 中文.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Christians in Seattle at UW">
+  <meta property="og:url" content="https://cisuw.com/install.html">
+  <meta property="og:image" content="https://cisuw.com/images/branding/og-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="images/branding/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://cisuw.com/install.html">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#4b2e83">
+  <link rel="apple-touch-icon" href="images/branding/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/site.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div id="site-header"></div>
+  <main id="main">
+    <header class="page-hero">
+      <div class="shell">
+        <p class="eyebrow" id="g-eyebrow">Home screen guide</p>
+        <h1 id="g-title">Put the site on your home screen</h1>
+      </div>
+    </header>
+    <section class="section section-white">
+      <div class="shell prose">
+        <p id="g-intro"></p>
+        <h2 id="g-ios-h"></h2>
+        <div class="guide-grid" id="g-ios"></div>
+        <h2 id="g-and-h"></h2>
+        <ol class="guide-list" id="g-and"></ol>
+        <h2 id="g-help-h"></h2>
+        <ul class="guide-list" id="g-help"></ul>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script type="module">
+    import { getLanguage } from "./js/i18n.js";
+    const D = {
+      en: {
+        eyebrow: "Home screen guide", title: "Put the site on your home screen",
+        intro: "Once it is on your home screen, cisuw.com opens like an app, full screen, in one tap. The weekly schedule also works offline.",
+        iosH: "iPhone (Safari)", andH: "Android (Chrome)", helpH: "Can't find it?",
+        k: "Step ",
+        ios: [
+          ["Open the site", "Open cisuw.com in Safari. Links opened inside WeChat can't do this, so open it in Safari first."],
+          ["Tap ≡, then Share", "In newer Safari, Add to Home Screen is inside Share. Tap ≡ next to the address bar, then Share."],
+          ["Add to Home Screen", "Scroll the share sheet and tap Add to Home Screen. If you don't see it, tap More."],
+          ["Tap Add", "Keep the name or edit it. Keep “Open as Web App” on, then tap Add at the top right."],
+          ["Done", "A purple club icon is now on your home screen."]
+        ],
+        and: ["Open cisuw.com in Chrome.", "Tap the three dots at the top right.", "Tap Install app. If you see Add to Home screen instead, tap that.", "Tap Install in the popup. The club icon appears on your home screen."],
+        help: ["On iPhone, use Safari and not a Private tab.", "Chrome on iPhone also has Add to Home Screen in its share menu.", "When the site updates, the icon opens the latest version. You don't need to reinstall."]
+      },
+      zh: {
+        eyebrow: "桌面添加教程", title: "把网站放到手机桌面",
+        intro: "添加后，cisuw.com 像 App 一样全屏打开，一点就进。每周聚会时间在没有网络时也能看。",
+        iosH: "iPhone（Safari）", andH: "Android（Chrome）", helpH: "找不到选项？",
+        k: "第",
+        ios: [
+          ["打开网站", "用 Safari 打开 cisuw.com。微信里的网页没有这个功能，请先在 Safari 打开。"],
+          ["点 ≡，再点“分享”", "新版 Safari 里，“添加到主屏幕”藏在分享里面。点网址栏旁边的 ≡，再点“分享”。"],
+          ["添加到主屏幕", "在分享面板里往下找，点“添加到主屏幕”。没看到就点“更多”。"],
+          ["点“添加”", "名称可以改。“作为网页 App 打开”保持开启，点右上角“添加”。"],
+          ["完成", "桌面多了紫色的社团图标。"]
+        ],
+        and: ["用 Chrome 打开 cisuw.com。", "点右上角的三个点。", "点“安装应用”。如果看到的是“添加到主屏幕”，就点它。", "在弹窗里点“安装”，桌面就会出现社团图标。"],
+        help: ["iPhone 上请用 Safari，并且不要在“私密浏览”里。", "iPhone 上的 Chrome 也能在分享菜单里找到“添加到主屏幕”。", "网站更新后，图标会直接打开最新版，不用重装。"]
+      }
+    };
+    function render() {
+      const lang = getLanguage(), L = D[lang];
+      const $ = (id) => document.getElementById(id);
+      $("g-eyebrow").textContent = L.eyebrow; $("g-title").textContent = L.title; $("g-intro").textContent = L.intro;
+      $("g-ios-h").textContent = L.iosH; $("g-and-h").textContent = L.andH; $("g-help-h").textContent = L.helpH;
+      const imgs = ["step1.jpg", "step2.jpg", "step3.jpg", "step4.jpg", "home-icon.png"];
+      $("g-ios").innerHTML = L.ios.map((s, i) => `<section class="guide-step"><img src="images/install/${imgs[i]}" alt="" loading="lazy" ${i === 4 ? 'style="aspect-ratio:1;max-width:120px;object-fit:cover"' : ""}><div class="gk">${L.k}${i + 1}${lang === "zh" ? "步" : ""}</div><h3>${s[0]}</h3><p>${s[1]}</p></section>`).join("");
+      $("g-and").innerHTML = L.and.map((s) => `<li>${s}</li>`).join("");
+      $("g-help").innerHTML = L.help.map((s) => `<li>${s}</li>`).join("");
+    }
+    render();
+    window.addEventListener("languagechange", render);
+  </script>
+</body>
+</html>
