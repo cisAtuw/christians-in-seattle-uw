@@ -2,12 +2,12 @@
 // - Pages, scripts and data: network first, so updates show up right away; falls back to cache, then to offline.html.
 // - Images: cache first.
 // - Push and badge handlers are ready for a future notification server.
-const CACHE = "cisuw-v3";
+const CACHE = "cisuw-v4";
 const META = "cisuw-meta";
 const PRECACHE = [
   "offline.html", "index.html", "events.html", "bible-study.html", "about.html", "contact.html",
   "css/site.css", "js/app.js", "js/i18n.js", "js/schedule.js", "js/interest.js", "js/install.js",
-  "data/site.js", "data/i18n.js", "data/events.js", "data/weekly-schedule.js",
+  "data/site.js", "data/i18n.js", "data/i18n-v3.js", "js/notify.js", "data/events.js", "data/weekly-schedule.js",
   "images/branding/icon-192.png", "images/branding/favicon.svg"
 ];
 

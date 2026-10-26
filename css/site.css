@@ -1561,3 +1561,83 @@ a {
 .rem-kinds legend { padding: 0 6px; font-weight: 700; color: var(--evergreen); }
 .rem-kinds label { display: flex; gap: 10px; align-items: center; min-height: 44px; cursor: pointer; }
 .rem-kinds input { width: 20px; height: 20px; accent-color: var(--evergreen); }
+
+/* ======== v3: lighter layout, jump bar, folds, compact home ======== */
+html { scroll-padding-top: 130px; }
+.section-compact { padding: 44px 0; }
+.section-gold { background: #fff4cf; }
+.button-outline { color: var(--evergreen); background: transparent; border: 2px solid var(--evergreen); }
+.button-outline:hover { background: rgba(75, 46, 131, 0.08); }
+.section-dark .button-outline { color: var(--white); border-color: rgba(255, 255, 255, 0.7); }
+.compact-h2 { margin: 0 0 18px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.1; color: var(--evergreen); }
+.section-heading h2, .remind-card h2, .compact-h2 { text-wrap: balance; word-break: keep-all; overflow-wrap: anywhere; }
+.section-white .section-heading h2 { color: var(--evergreen); }
+.section-white .section-heading p, .section-white .eyebrow { color: var(--gold-dark); }
+
+/* this week (home) */
+.wk-list { display: grid; gap: 10px; }
+.wk-row { display: grid; grid-template-columns: 62px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 10px; color: var(--white); text-decoration: none; }
+.wk-row.tt-worship { color: #2b2100; }
+.wk-day { font-weight: 800; font-size: 0.9rem; }
+.wk-main { display: grid; gap: 1px; min-width: 0; }
+.wk-main strong { font-size: 1rem; }
+.wk-main small { opacity: 0.9; }
+.wk-time { font-size: 0.82rem; font-weight: 700; text-align: right; white-space: nowrap; }
+.wk-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.remind-panel, .remind-card { margin-top: 16px; padding: 18px 20px; border-radius: 12px; background: #fff4cf; color: var(--ink); }
+.remind-panel h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--evergreen); }
+.remind-card { margin-top: 0; background: var(--white); box-shadow: var(--shadow); max-width: 640px; }
+.remind-card h2 { margin: 0 0 8px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.5rem, 3.6vw, 2rem); color: var(--evergreen); }
+.tt-flag { display: inline-block; align-self: flex-start; padding: 1px 8px; margin-bottom: 2px; border-radius: 999px; background: #fff; color: #9b1c3a; font-weight: 800; font-size: 0.7rem; }
+.tt-note { display: block; margin-top: 3px; font-size: 0.72rem; font-style: italic; opacity: 0.95; }
+.is-canceled { opacity: 0.75; }
+.is-canceled strong { text-decoration: line-through; }
+
+/* first time */
+.first-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.first-card { padding: 16px; border-radius: 10px; background: var(--white); box-shadow: 0 4px 14px rgba(45, 27, 78, 0.08); }
+.first-card h3 { margin: 0 0 4px; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sky); }
+.first-card p { margin: 0; font-size: 0.95rem; line-height: 1.5; }
+.first-card:nth-child(2) h3 { color: var(--rose); }
+.first-card:nth-child(3) h3 { color: var(--gold-dark); }
+.first-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.church-strip { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; justify-content: space-between; }
+.church-strip > div { flex: 1 1 320px; }
+.church-strip p { margin: 0; }
+.church-strip .eyebrow { margin-bottom: 4px; }
+
+/* folds */
+details.fold { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 10px; }
+details.fold > summary, .fold-dark > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: 8px; font-weight: 800; color: var(--evergreen); list-style: none; }
+details.fold > summary::-webkit-details-marker, .fold-dark > summary::-webkit-details-marker { display: none; }
+details.fold > summary::before, .fold-dark > summary::before { content: "▸"; transition: transform 0.15s; }
+details.fold[open] > summary::before, .fold-dark[open] > summary::before { transform: rotate(90deg); }
+.cal-fold { border-top: 0; padding-top: 0; }
+.cal-fold > summary { padding: 0 4px; }
+.fold-dark > summary { color: var(--white); font-size: 1.2rem; font-family: Georgia, "Times New Roman", serif; }
+.fold-dark[open] > summary { margin-bottom: 14px; }
+#interest.section-compact { padding: 22px 0; }
+
+/* jump bar */
+.jump { position: sticky; top: 72px; z-index: 40; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+.jump-inner { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; scrollbar-width: none; }
+.jump-inner::-webkit-scrollbar { display: none; }
+.jump a { flex: 0 0 auto; padding: 8px 14px; min-height: 40px; display: inline-flex; align-items: center; border-radius: 999px; background: #f1e8f1; color: var(--evergreen); font-weight: 700; font-size: 0.9rem; text-decoration: none; white-space: nowrap; }
+.jump a.is-current { background: var(--evergreen); color: var(--white); }
+#weekly, #reminders, #weekly-calendar, #past { scroll-margin-top: 130px; }
+.past-more-row { margin: 18px 0 0; text-align: center; }
+
+@media (max-width: 820px) {
+  .section { padding: 44px 0; }
+  .section-compact { padding: 32px 0; }
+  .first-grid { grid-template-columns: 1fr; }
+  .wk-row { grid-template-columns: 54px minmax(0, 1fr); }
+  .wk-time { grid-column: 2; text-align: left; }
+  .remind-card { padding: 16px; }
+  .jump { top: 64px; }
+  .schedule-actions .button { width: 100%; }
+}
+.wk-list { max-width: 860px; }
+.wk-row .tt-note { grid-column: 2 / -1; margin: 0; }
+.wk-row .tt-flag { grid-column: 2 / -1; justify-self: start; }
+@media (max-width: 820px) { .page-hero { padding: 34px 0 26px; } }

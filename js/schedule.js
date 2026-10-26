@@ -239,7 +239,56 @@ function slotTime(slot) {
 }
 
 function slotInner(slot) {
-  return `<span class="tt-time">${slotTime(slot)}</span><strong>${localized(slot.title)}</strong><small>${localized(slot.place)}</small>`;
+  return `<span class="tt-time">${slotTime(slot)}</span><strong>${localized(slot.title)}</strong><small class="tt-place">${localized(slot.place)}</small>`;
+}
+
+// ---- Weekly changes (room / canceled / note) published from the reminder server ----
+const PUSH_API = "https://cisuw-push.christiansinseattle.workers.dev";
+let overridesPromise = null;
+function loadOverrides() {
+  if (!overridesPromise) {
+    overridesPromise = fetch(`${PUSH_API}/overrides`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+  }
+  return overridesPromise;
+}
+
+function ptNow(now = new Date()) {
+  const f = new Intl.DateTimeFormat("en-US", { timeZone: timezone, weekday: "short", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+  const o = {};
+  f.formatToParts(now).forEach((p) => { o[p.type] = p.value; });
+  return { day: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(o.weekday), y: +o.year, m: +o.month, d: +o.day, minutes: +o.hour * 60 + +o.minute };
+}
+
+// Next date (Pacific time) on which a weekly slot happens, skipping slots that already ended today.
+export function nextOccurrence(slot, now = new Date()) {
+  const n = ptNow(now);
+  let delta = (slot.day - n.day + 7) % 7;
+  if (delta === 0 && toMinutes(slot.end) <= n.minutes) delta = 7;
+  const date = new Date(Date.UTC(n.y, n.m - 1, n.d + delta));
+  return { delta, date: date.toISOString().slice(0, 10) };
+}
+
+export async function applyOverrides(root = document) {
+  const nodes = root.querySelectorAll("[data-slot]");
+  if (!nodes.length) return;
+  const all = await loadOverrides();
+  nodes.forEach((node) => {
+    const slot = weeklySchedule.find((s) => s.id === node.dataset.slot);
+    if (!slot) return;
+    const ovr = all[`${nextOccurrence(slot).date}:${slot.id}`];
+    node.querySelectorAll(".tt-flag, .tt-note").forEach((x) => x.remove());
+    node.classList.remove("is-canceled");
+    if (!ovr) return;
+    if (ovr.cancel) {
+      node.classList.add("is-canceled");
+      node.insertAdjacentHTML("afterbegin", `<span class="tt-flag">${t("v3.canceled")}</span>`);
+    } else if (ovr.room) {
+      const place = node.querySelector(".tt-place");
+      if (place) place.textContent = /^\d{3}$/.test(String(ovr.room).trim()) ? `Suzzallo ${String(ovr.room).trim()}` : ovr.room;
+    }
+    const note = ovr.note && (typeof ovr.note === "object" ? localized(ovr.note) : ovr.note);
+    if (note) node.insertAdjacentHTML("beforeend", `<span class="tt-note">${String(note).replace(/[<>&]/g, "")}</span>`);
+  });
 }
 
 function timetableHtml() {
@@ -256,13 +305,13 @@ function timetableHtml() {
     const col = TT_DAYS.findIndex((day) => day.d === slot.day) + 2;
     const r1 = (toMinutes(slot.start) - TT_START) / 30 + 2;
     const r2 = (toMinutes(slot.end) - TT_START) / 30 + 2;
-    return `<div class="tt-event tt-${slot.kind}" style="grid-column:${col};grid-row:${r1} / ${r2}">${slotInner(slot)}</div>`;
+    return `<div class="tt-event tt-${slot.kind}" data-slot="${slot.id}" style="grid-column:${col};grid-row:${r1} / ${r2}">${slotInner(slot)}</div>`;
   }).join("");
   const agenda = TT_DAYS.map((day) => {
     const items = weeklySchedule
       .filter((slot) => slot.day === day.d)
       .sort((a, b) => a.start.localeCompare(b.start))
-      .map((slot) => `<li class="tt-item tt-${slot.kind}">${slotInner(slot)}</li>`)
+      .map((slot) => `<li class="tt-item tt-${slot.kind}" data-slot="${slot.id}">${slotInner(slot)}</li>`)
       .join("");
     return `<div class="tt-day"><h3>${zh ? day.zh : day.en}</h3><ul>${items}</ul></div>`;
   }).join("");
@@ -282,13 +331,16 @@ function timetableBlock() {
   return `
     <div class="timetable-wrap">
       ${timetableHtml()}
-      <ul class="tt-notes">${notes}${slotNotes}</ul>
-      <div class="tt-join">
-        <h3>${t("pages.joinTitle")}</h3>
-        <p>${t("pages.joinBody1")}</p>
-        <p>${t("pages.joinBody2")}</p>
-        <p class="tt-join-links"><a href="index.html#interest">${t("pages.joinInterest")} →</a><a href="contact.html">${t("nav.contact")} →</a><a href="bible-study.html">${t("pages.bibleLink")} →</a><a href="calendar/fall-2026-orientation.ics" download>${t("pages.icsDownload")}</a></p>
-      </div>
+      <details class="fold">
+        <summary>${t("v3.details")}</summary>
+        <ul class="tt-notes">${notes}${slotNotes}</ul>
+        <div class="tt-join">
+          <h3>${t("pages.joinTitle")}</h3>
+          <p>${t("pages.joinBody1")}</p>
+          <p>${t("pages.joinBody2")}</p>
+          <p class="tt-join-links"><a href="index.html#interest">${t("pages.joinInterest")} →</a><a href="contact.html">${t("nav.contact")} →</a><a href="bible-study.html">${t("pages.bibleLink")} →</a><a href="calendar/fall-2026-orientation.ics" download>${t("pages.icsDownload")}</a></p>
+        </div>
+      </details>
     </div>`;
 }
 
@@ -298,4 +350,27 @@ export function renderUpcoming(container, upcoming = []) {
     timetableBlock(),
     ...upcoming.filter((e) => e.public !== false).map((e) => eventCard(e)),
   ].join("");
+  applyOverrides(container);
+}
+
+// Short "this week" list for the home page: the next few gatherings, soonest first.
+export function renderCompactWeek(container, limit = 4) {
+  if (!container) return;
+  const now = new Date();
+  const rows = weeklySchedule
+    .map((slot) => ({ slot, occ: nextOccurrence(slot, now) }))
+    .sort((a, b) => a.occ.date.localeCompare(b.occ.date) || a.slot.start.localeCompare(b.slot.start))
+    .slice(0, limit)
+    .map(({ slot, occ }) => {
+      const zh = getLanguage() === "zh";
+      const dayName = zh ? TT_DAYS.find((d) => d.d === slot.day).zh : TT_DAYS.find((d) => d.d === slot.day).en;
+      const label = occ.delta === 0 ? t("v3.today") : occ.delta === 1 ? t("v3.tomorrow") : dayName;
+      return `<a class="wk-row tt-${slot.kind}" href="events.html#weekly" data-slot="${slot.id}">
+        <span class="wk-day">${label}</span>
+        <span class="wk-main"><strong>${localized(slot.title)}</strong><small class="tt-place">${localized(slot.place)}</small></span>
+        <span class="wk-time">${slotTime(slot)}</span>
+      </a>`;
+    }).join("");
+  container.innerHTML = rows;
+  applyOverrides(container);
 }

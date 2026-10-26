@@ -1,4 +1,7 @@
 import { translations } from "../data/i18n.js";
+import { extra } from "../data/i18n-v3.js";
+
+for (const lang of Object.keys(extra)) Object.assign(translations[lang], extra[lang]);
 
 const STORAGE_KEY = "cis-uw-language";
 const supported = ["en", "zh"];

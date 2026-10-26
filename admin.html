@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin · CIS UW</title>
+  <link rel="icon" href="images/branding/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+  <style>
+    body { background: var(--paper); }
+    .adm { width: min(760px, calc(100% - 24px)); margin: 0 auto; padding: 18px 0 60px; }
+    .adm h1 { font-family: Georgia, serif; color: var(--evergreen); margin: 8px 0 4px; }
+    .adm .sub { color: var(--muted); margin: 0 0 16px; }
+    .card { background: #fff; border-radius: 12px; padding: 14px 16px; margin: 12px 0; box-shadow: var(--shadow); }
+    .card h2 { margin: 0 0 8px; font-size: 1.1rem; color: var(--evergreen); }
+    label.f { display: grid; gap: 3px; font-weight: 700; font-size: 0.85rem; margin: 8px 0; }
+    input[type=text], input[type=password], textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .slot { border-left: 6px solid var(--evergreen); }
+    .slot.reading-zh { border-color: #94533a; } .slot.reading-en { border-color: #5c6f4e; }
+    .slot.fellowship { border-color: #b04672; } .slot.hike { border-color: var(--blue); } .slot.worship { border-color: var(--gold); }
+    .slot h3 { margin: 0 0 4px; font-size: 1rem; }
+    .slot .when { color: var(--muted); font-size: 0.85rem; margin-bottom: 6px; }
+    .chk { display: flex; align-items: center; gap: 8px; min-height: 40px; font-weight: 700; }
+    .msg { min-height: 1.4em; font-size: 0.9rem; font-weight: 700; }
+    .ok { color: #1c6b36; } .err { color: #9b1c3a; }
+    @media (max-width: 520px) { .row2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="adm">
+    <h1>Admin</h1>
+    <p class="sub">Change this week's room, cancel a gathering, add a note, or send a message to everyone with reminders on. Changes show on the site and in the reminder notifications.</p>
+
+    <div class="card">
+      <label class="f">Admin key <input type="password" id="token" autocomplete="off" placeholder="paste once; stays on this device"></label>
+      <button class="button button-dark" id="check" type="button">Check key &amp; subscribers</button>
+      <p class="msg" id="check-msg"></p>
+    </div>
+
+    <div id="slots"></div>
+
+    <div class="card">
+      <h2>Send a message to everyone now</h2>
+      <p class="sub">Goes to every phone with reminders on, in each phone's language. Use for last-minute changes.</p>
+      <div class="row2">
+        <label class="f">Title (English) <input type="text" id="b-te" maxlength="80" placeholder="Bible study moved"></label>
+        <label class="f">标题 (中文) <input type="text" id="b-tz" maxlength="80" placeholder="查经地点更改"></label>
+        <label class="f">Message (English) <input type="text" id="b-be" maxlength="200" placeholder="Tonight in Suzzallo 335"></label>
+        <label class="f">内容 (中文) <input type="text" id="b-bz" maxlength="200" placeholder="今晚改到 Suzzallo 335"></label>
+      </div>
+      <button class="button button-primary" id="send" type="button">Send to everyone</button>
+      <p class="msg" id="send-msg"></p>
+    </div>
+  </div>
+  <script type="module">
+    import { weeklySchedule } from "./data/events.js";
+    import { nextOccurrence } from "./js/schedule.js";
+    const API = "https://cisuw-push.christiansinseattle.workers.dev";
+    const $ = (s) => document.querySelector(s);
+    const tokenEl = $("#token");
+    try { tokenEl.value = localStorage.getItem("cis-admin-token") || ""; } catch (e) {}
+    tokenEl.addEventListener("change", () => { try { localStorage.setItem("cis-admin-token", tokenEl.value.trim()); } catch (e) {} });
+    const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    async function post(path, body) {
+      const r = await fetch(API + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ token: tokenEl.value.trim() }, body)) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(r.status === 403 ? "Wrong admin key" : "Error " + r.status);
+      return j;
+    }
+    const say = (el, msg, ok) => { el.textContent = msg; el.className = "msg " + (ok ? "ok" : "err"); };
+
+    $("#check").addEventListener("click", async () => {
+      try { const j = await post("/admin/stats", {}); say($("#check-msg"), "Key OK · " + j.subscribers + " device(s) subscribed", true); }
+      catch (e) { say($("#check-msg"), e.message, false); }
+    });
+
+    // Next two weeks of slots
+    const items = [];
+    weeklySchedule.forEach((s) => {
+      const first = nextOccurrence(s);
+      [first.date, new Date(Date.parse(first.date + "T00:00:00Z") + 7 * 864e5).toISOString().slice(0, 10)].forEach((date) => items.push({ s, date }));
+    });
+    items.sort((a, b) => a.date.localeCompare(b.date) || a.s.start.localeCompare(b.s.start));
+    const box = $("#slots");
+    let current = {};
+    function esc(x) { return String(x || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+    function draw() {
+      box.innerHTML = items.map(({ s, date }, i) => {
+        const o = current[date + ":" + s.id] || {};
+        const d = new Date(date + "T12:00:00Z");
+        return `<div class="card slot ${s.kind}" data-i="${i}">
+          <h3>${s.title.en} · ${s.title.zh}</h3>
+          <div class="when">${DAYS[d.getUTCDay()]} ${date} · ${s.start}–${s.end}</div>
+          <div class="row2">
+            <label class="f">Room (e.g. 334, or any text) <input type="text" class="r" value="${esc(o.room)}" placeholder="${esc(s.place.en)}"></label>
+            <label class="chk"><input type="checkbox" class="c" ${o.cancel ? "checked" : ""}> Canceled</label>
+            <label class="f">Note (English) <input type="text" class="ne" maxlength="200" value="${esc(o.note && o.note.en)}"></label>
+            <label class="f">备注 (中文) <input type="text" class="nz" maxlength="200" value="${esc(o.note && o.note.zh)}"></label>
+          </div>
+          <button class="button button-primary save" type="button">Save</button> <span class="msg"></span>
+        </div>`;
+      }).join("");
+      box.querySelectorAll(".save").forEach((btn) => btn.addEventListener("click", async () => {
+        const card = btn.closest(".card"); const { s, date } = items[+card.dataset.i];
+        const ne = card.querySelector(".ne").value.trim(), nz = card.querySelector(".nz").value.trim();
+        const body = { date, id: s.id, room: card.querySelector(".r").value.trim(), cancel: card.querySelector(".c").checked };
+        if (ne || nz) body.note = { en: ne || nz, zh: nz || ne };
+        const msg = card.querySelector(".msg");
+        try { await post("/admin/override", body); say(msg, "Saved", true); }
+        catch (e) { say(msg, e.message, false); }
+      }));
+    }
+    fetch(API + "/overrides").then((r) => r.json()).then((j) => { current = j; }).catch(() => {}).finally(draw);
+
+    $("#send").addEventListener("click", async () => {
+      const te = $("#b-te").value.trim(), tz = $("#b-tz").value.trim(), be = $("#b-be").value.trim(), bz = $("#b-bz").value.trim();
+      const msg = $("#send-msg");
+      if (!(te || tz)) { say(msg, "Add a title", false); return; }
+      if (!confirm("Send this to everyone with reminders on?")) return;
+      try {
+        const j = await post("/admin/broadcast", { texts: { en: { title: te || tz, body: be || bz }, zh: { title: tz || te, body: bz || be } } });
+        say(msg, "Sent to " + j.sent + " device(s)", true);
+      } catch (e) { say(msg, e.message, false); }
+    });
+  </script>
+</body>
+</html>

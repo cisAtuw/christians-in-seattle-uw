@@ -34,7 +34,15 @@
         <p data-i18n="pages.eventsIntro">Our weekly rhythm, plus photos from past gatherings.</p>
       </div>
     </header>
-    <section class="section section-dark">
+    <nav class="jump" aria-label="On this page" data-i18n-aria="v3.jumpLabel">
+      <div class="shell jump-inner">
+        <a href="#weekly" data-i18n="v3.jumpWeekly">Weekly</a>
+        <a href="#reminders" data-i18n="v3.jumpReminders">Reminders</a>
+        <a href="#weekly-calendar" data-i18n="v3.jumpCalendar">Calendar</a>
+        <a href="#past" data-i18n="v3.jumpPast">Past events</a>
+      </div>
+    </nav>
+    <section id="weekly" class="section section-white">
       <div class="shell">
         <div class="section-heading-row">
           <div class="section-heading"><h2 data-i18n="home.featured">Our Weekly Rhythm</h2></div>
@@ -46,30 +54,36 @@
         <div class="notice" data-i18n="common.latestNotice">Meeting rooms and event details may change. Please check Instagram, Discord, or the latest event listing before attending.</div>
       </div>
     </section>
+    <section id="reminders" class="section section-gold">
+      <div class="shell">
+        <div class="remind-card">
+          <h2 id="rem-title">Get a reminder before each gathering</h2>
+          <div id="reminders-body"></div>
+        </div>
+      </div>
+    </section>
     <section id="weekly-calendar" class="section section-accent">
       <div class="shell">
         <div class="section-heading-row">
           <div class="section-heading">
             <p class="eyebrow">Google Calendar</p>
-            <h2>Weekly Calendar · 每周日历</h2>
+            <h2 data-i18n="v3.calTitle">Weekly Calendar</h2>
           </div>
           <div class="schedule-actions">
-            <a class="button button-dark" href="https://calendar.google.com/calendar/r?cid=christiansinseattle%40uw.edu" target="_blank" rel="noopener noreferrer">Add to my Google Calendar · 加入我的日历</a>
+            <a class="button button-dark" href="https://calendar.google.com/calendar/r?cid=christiansinseattle%40uw.edu" target="_blank" rel="noopener noreferrer" data-i18n="v3.calAdd">Add to my Google Calendar</a>
           </div>
         </div>
-        <iframe class="cal-embed" title="Christians in Seattle at UW weekly calendar" loading="lazy" src="https://calendar.google.com/calendar/embed?src=christiansinseattle%40uw.edu&ctz=America%2FLos_Angeles&mode=WEEK&showTitle=0&showPrint=0&showTz=0"></iframe>
+        <details class="fold cal-fold" id="cal-fold">
+          <summary data-i18n="v3.calShow">Show the calendar</summary>
+          <iframe class="cal-embed" title="Christians in Seattle at UW weekly calendar" loading="lazy" src="https://calendar.google.com/calendar/embed?src=christiansinseattle%40uw.edu&ctz=America%2FLos_Angeles&mode=WEEK&showTitle=0&showPrint=0&showTz=0"></iframe>
+        </details>
       </div>
     </section>
-    <section id="reminders" class="section section-white">
-      <div class="shell prose">
-        <h2 id="rem-title">Get a reminder before each gathering</h2>
-        <div id="reminders-body"></div>
-      </div>
-    </section>
-    <section class="section section-white">
+    <section id="past" class="section section-white">
       <div class="shell">
         <div class="section-heading"><h2 data-i18n="pages.past">Past Events</h2></div>
         <div id="past-events" class="schedule-grid" aria-live="polite"></div>
+        <p class="past-more-row"><button type="button" class="button button-outline" id="past-more" hidden></button></p>
       </div>
     </section>
   </main>
@@ -77,20 +91,45 @@
   <script type="module">
     import { pastEvents } from "./data/events.js";
     import { splitEvents, renderSchedule, renderUpcoming } from "./js/schedule.js";
-    import { getLanguage } from "./js/i18n.js";
+    import { getLanguage, t } from "./js/i18n.js";
+    const PAST_STEP = 3;
+    let pastShown = PAST_STEP;
     function render() {
       const groups = splitEvents();
       renderUpcoming(document.querySelector("#upcoming-events"), groups.upcoming);
       const past = document.querySelector("#past-events");
+      const more = document.querySelector("#past-more");
       const allPast = [...groups.past, ...groups.cancelled, ...pastEvents].sort((a, b) => b.date.localeCompare(a.date));
       if (allPast.length) {
-        renderSchedule(past, allPast);
+        renderSchedule(past, allPast.slice(0, pastShown));
+        const rest = allPast.length - pastShown;
+        more.hidden = allPast.length <= PAST_STEP;
+        more.textContent = rest > 0 ? t("v3.showMore") + " (" + rest + ")" : t("v3.showLess");
+        more.dataset.mode = rest > 0 ? "more" : "less";
       } else {
+        more.hidden = true;
         past.innerHTML = "<p class=\"empty-state\">" + (getLanguage() === "zh" ? "目前没有过往活动记录。" : "No past events are listed yet.") + "</p>";
       }
     }
+    document.querySelector("#past-more").addEventListener("click", (e) => {
+      pastShown = e.currentTarget.dataset.mode === "more" ? pastShown + 6 : PAST_STEP;
+      render();
+    });
     render();
     window.addEventListener("languagechange", render);
+
+    // Calendar embed: open on wide screens, folded on phones.
+    const fold = document.querySelector("#cal-fold");
+    if (matchMedia("(min-width: 821px)").matches) fold.open = true;
+    if (location.hash === "#weekly-calendar") fold.open = true;
+
+    // Highlight the current section in the jump bar.
+    const links = [...document.querySelectorAll(".jump a")];
+    const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => { if (en.isIntersecting) { links.forEach((l) => l.classList.remove("is-current")); map.get(en.target.id)?.classList.add("is-current"); } });
+    }, { rootMargin: "-35% 0px -60% 0px" });
+    map.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
   </script>
 </body>
 </html>

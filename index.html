@@ -36,6 +36,7 @@
     }
   </script>
   <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/notify.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -55,52 +56,57 @@
       </div>
     </section>
 
-    <section id="fall-schedule" class="section section-dark">
+    <section id="this-week" class="section section-white section-compact">
       <div class="shell">
         <div class="section-heading-row">
           <div class="section-heading">
             <p class="eyebrow">Fall 2026</p>
-            <h2 data-i18n="home.featured">Fall Quarter Schedule</h2>
-          </div>
-          <div class="schedule-actions">
-            <a class="button button-primary" href="#" data-google-calendar-all data-social-preview="calendar" data-i18n="common.addAll">Add all to Google Calendar</a>
+            <h2 data-i18n="v3.thisWeek">This Week</h2>
           </div>
         </div>
-        <div id="featured-schedule" class="schedule-grid" aria-live="polite"></div>
+        <div id="week-compact" class="wk-list" aria-live="polite"></div>
+        <div class="wk-actions">
+          <button type="button" class="button button-primary" id="remind-toggle" aria-expanded="false" aria-controls="home-remind" data-i18n="v3.remindMe">🔔 Remind me</button>
+          <a class="button button-outline" href="events.html" data-i18n="v3.fullSchedule">Full schedule &amp; details</a>
+        </div>
+        <div id="home-remind" class="remind-panel" hidden>
+          <h3 id="rem-title">Get a reminder before each gathering</h3>
+          <div id="reminders-body"></div>
+        </div>
       </div>
     </section>
 
-
-
-    <section class="section section-accent">
-      <div class="shell split-panel">
-        <div>
-          <p class="eyebrow">Welcome, Huskies</p>
-          <h2 data-i18n="home.newToUw">New to UW?</h2>
-          <p data-i18n="home.newToUwText">Everyone is welcome, and you do not need to be a Christian to attend. Follow Instagram for the latest event details.</p>
-          <p class="inline-status inline-status-dark" hidden data-discord-unavailable data-i18n="common.discordUnavailable">Discord invite being updated</p>
+    <section class="section section-accent section-compact">
+      <div class="shell">
+        <p class="eyebrow" data-i18n="v3.firstEyebrow">Welcome, Huskies</p>
+        <h2 class="compact-h2" data-i18n="v3.firstTime">First time here?</h2>
+        <div class="first-grid">
+          <div class="first-card"><h3 data-i18n="v3.whenTitle">When</h3><p data-i18n="v3.whenText"></p></div>
+          <div class="first-card"><h3 data-i18n="v3.whereTitle">Where</h3><p data-i18n="v3.whereText"></p></div>
+          <div class="first-card"><h3 data-i18n="v3.whatTitle">What</h3><p data-i18n="v3.whatText"></p></div>
         </div>
-        <div class="action-stack">
+        <p class="inline-status inline-status-dark" hidden data-discord-unavailable data-i18n="common.discordUnavailable">Discord invite being updated</p>
+        <div class="first-actions">
           <a class="button button-dark" data-link="discordInviteUrl" data-social-preview="discord" data-i18n="home.joinDiscord">Join Discord</a>
           <a class="button button-dark" data-link="instagramUrl" data-social-preview="instagram" data-i18n="home.followInstagram">Follow Instagram</a>
-          <a class="button button-dark" href="#interest" data-i18n="home.interestEyebrow">Get in touch</a>
+          <a class="button button-outline" href="#interest" data-open-interest data-i18n="v3.messageUs">Message us</a>
         </div>
       </div>
     </section>
 
-    <section class="section section-white">
-      <div class="shell photo-strip">
-        <img src="images/events/2026-10-sunday-worship/sunday.webp" alt="Students gathering for a campus fellowship event" loading="lazy" decoding="async" width="800" height="600">
-        <div class="photo-strip-copy">
-          <p class="eyebrow">Student community</p>
-          <h2 data-i18n="home.relationship">Our Relationship to the Church</h2>
+    <section class="section section-white section-compact">
+      <div class="shell church-strip">
+        <div>
+          <p class="eyebrow" data-i18n="home.relationship">Our Relationship to the Church</p>
           <p data-i18n="home.relationshipText">Christians in Seattle at UW is a student-led Registered Student Organization serving students at the University of Washington.</p>
-          <p><a class="button button-primary" data-link="churchWebsiteUrl" data-social-preview="church" data-i18n="common.church">Learn About the Church</a></p>
         </div>
+        <a class="button button-primary" data-link="churchWebsiteUrl" data-social-preview="church" data-i18n="common.church">Learn About the Church</a>
       </div>
     </section>
-    <section id="interest" class="section section-dark">
-      <div class="shell interest-layout">
+    <section id="interest" class="section section-dark section-compact">
+      <details class="shell fold-dark" id="interest-fold">
+        <summary data-i18n="v3.interestToggle">Interested? Leave your contact</summary>
+      <div class="interest-layout">
         <div>
           <p class="eyebrow" data-i18n="home.interestEyebrow">Get in touch</p>
           <h2 data-i18n="home.interestTitle">Interested? Let us reach out to you</h2>
@@ -141,21 +147,33 @@
           <p class="form-status" data-form-status role="status" aria-live="polite"></p>
         </form>
       </div>
+      </details>
     </section>
   </main>
 
   <div id="site-footer"></div>
   <script type="module">
-    import { fallOrientationEvents } from "./data/events.js";
-    import { splitEvents, renderUpcoming } from "./js/schedule.js";
+    import { renderCompactWeek } from "./js/schedule.js";
     import { bindInterestForm } from "./js/interest.js";
     bindInterestForm(document.querySelector("#interest-form"));
-    function renderHomeSchedule() {
-      const groups = splitEvents(fallOrientationEvents);
-      renderUpcoming(document.querySelector("#featured-schedule"), groups.upcoming);
-    }
-    renderHomeSchedule();
-    window.addEventListener("languagechange", renderHomeSchedule);
+    renderCompactWeek(document.querySelector("#week-compact"));
+    window.addEventListener("languagechange", () => renderCompactWeek(document.querySelector("#week-compact")));
+
+    const toggle = document.querySelector("#remind-toggle");
+    const panel = document.querySelector("#home-remind");
+    toggle.addEventListener("click", () => {
+      const open = panel.hidden;
+      panel.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      if (open) panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    if (location.hash === "#remind") toggle.click();
+
+    const fold = document.querySelector("#interest-fold");
+    const openInterest = () => { fold.open = true; };
+    document.querySelectorAll("[data-open-interest]").forEach((a) => a.addEventListener("click", () => { openInterest(); setTimeout(() => fold.scrollIntoView({ behavior: "smooth" }), 50); }));
+    if (location.hash === "#interest") openInterest();
+    window.addEventListener("hashchange", () => { if (location.hash === "#interest") openInterest(); });
   </script>
 </body>
 </html>
