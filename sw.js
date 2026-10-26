@@ -2,7 +2,7 @@
 // - Pages, scripts and data: network first, so updates show up right away; falls back to cache, then to offline.html.
 // - Images: cache first.
 // - Push and badge handlers are ready for a future notification server.
-const CACHE = "cisuw-v2";
+const CACHE = "cisuw-v3";
 const META = "cisuw-meta";
 const PRECACHE = [
   "offline.html", "index.html", "events.html", "bible-study.html", "about.html", "contact.html",
@@ -78,19 +78,34 @@ self.addEventListener("periodicsync", (e) => {
   if (e.tag === "check-updates") e.waitUntil(checkForUpdates());
 });
 
-// ---- Push notifications (needs a push server; see the notification plan) ----
+// ---- Push notifications ----
+// The reminder server sends an empty push; the message text is fetched from /pending.
+const PUSH_API = "https://cisuw-push.christiansinseattle.workers.dev";
+
+async function sha256hex(text) {
+  const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(d)).map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+
 self.addEventListener("push", (e) => {
-  let d = {};
-  try { d = e.data.json(); } catch (err) { /* plain text or empty */ }
-  e.waitUntil(Promise.all([
-    self.registration.showNotification(d.title || "Christians in Seattle at UW", {
-      body: d.body || "",
+  e.waitUntil((async () => {
+    let m = null;
+    try { m = e.data ? e.data.json() : null; } catch (err) { m = null; }
+    if (!m) {
+      try {
+        const sub = await self.registration.pushManager.getSubscription();
+        if (sub) m = await (await fetch(PUSH_API + "/pending?h=" + (await sha256hex(sub.endpoint)))).json();
+      } catch (err) { m = null; }
+    }
+    m = m || { title: "Christians in Seattle at UW", body: "A gathering starts soon.", url: "events.html" };
+    await self.registration.showNotification(m.title || "Christians in Seattle at UW", {
+      body: m.body || "",
       icon: "images/branding/icon-192.png",
       badge: "images/branding/icon-192.png",
-      data: { url: d.url || "./" }
-    }),
-    self.navigator.setAppBadge ? self.navigator.setAppBadge(1).catch(() => {}) : Promise.resolve()
-  ]));
+      data: { url: m.url || "events.html" }
+    });
+    if (self.navigator.setAppBadge) await self.navigator.setAppBadge(1).catch(() => {});
+  })());
 });
 
 self.addEventListener("notificationclick", (e) => {
