@@ -1,0 +1,16 @@
+{
+  "name": "christians-in-seattle-uw",
+  "private": true,
+  "description": "Quality checks for cisuw.com. The site itself has no build step.",
+  "type": "module",
+  "scripts": {
+    "serve": "python3 -m http.server 4174 --bind 127.0.0.1",
+    "test:a11y": "node --test \"tests/*.test.mjs\"",
+    "lighthouse": "lhci autorun"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
+    "@lhci/cli": "0.14.0",
+    "playwright": "1.63.0"
+  }
+}

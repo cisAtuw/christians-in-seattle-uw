@@ -147,6 +147,23 @@ images/
 
 Use original, approved organization assets. Add useful alt text and optimize large files. Public Instagram posts can be content candidates, but photos with identifiable people still require publication approval. Do not use screenshots when an original file is available.
 
+## Quality Checks (CI)
+
+Every pull request and every push to `main` or `staging` runs `.github/workflows/quality.yml`. A change can't go live unless both gates pass:
+
+1. **Accessibility (axe-core):** 0 violations on the 10 public pages, in English and Chinese, at phone (390px) and desktop (1280px) widths: 40 checks (`tests/accessibility.test.mjs`).
+2. **Lighthouse CI:** Accessibility and SEO must score 100 on every public page (mobile profile). `offline.html` is deliberately `noindex`, so only its accessibility is checked. Performance and Best Practices are reported as warnings because they depend on the CI machine. Reports are kept as a build artifact.
+
+Run them locally:
+
+```bash
+npm install
+npx playwright install chromium
+npm run serve &          # http://127.0.0.1:4174
+npm run test:a11y
+npx lhci autorun
+```
+
 ## GitHub and Netlify Workflow
 
 1. Create a branch from `main`.
