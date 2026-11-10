@@ -1,6 +1,7 @@
 import { siteData } from "../data/site.js";
 import { applyDocumentLanguage, getLanguage, t, toggleLanguage } from "./i18n.js";
 import "./install.js";
+import "./analytics.js";
 
 const navigation = [
   ["nav.home", "index.html"],
